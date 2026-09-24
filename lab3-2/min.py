@@ -1,23 +1,9 @@
-                # for i in range(4):
-                #     for j in range(i + 1, 4):
-                #         if xs[j] < xs[i]:
-                #             xs[i], xs[j] = xs[j], xs[i]
-                #             fs[i], fs[j] = fs[j], fs[i]
-                # idx = 0
-                # best_diff = abs(xs[0] - best)
-                # for i in range(1, 4):
-                #     diff = abs(xs[i] - best)
-                #     if diff < best_diff:
-                #         best_diff = diff
-                #         idx = i
-                # if idx == 0:
-                #     idx += 1
-                # if idx == 3:
-                #     idx -= 1
-
+import math
+import time
 
 
 def dich(func, a0, b0, l, eps):
+    start = time.time()
     a_k = a0
     b_k = b0
     k = 0
@@ -32,16 +18,17 @@ def dich(func, a0, b0, l, eps):
             b_next = b_k
         L_next = abs(b_next-a_next)
         if L_next <= l:
+            end = time.time()
+            print(f'Execution time of dichotomy: {end - start} ms')
             return (a_next + b_next) / 2
         else:
             k += 1
             a_k = a_next
             b_k = b_next
 
-import math
-
 
 def interpolation(x, dx, e1, e2, func):
+    start = time.time()
     # 1
     if dx <= 0 or func is None:
         return 0
@@ -81,6 +68,8 @@ def interpolation(x, dx, e1, e2, func):
             cond2 = math.fabs((x_min - x_bar) / x_bar)
             # 8 a
             if cond1 < e1 and cond2 < e2:
+                end = time.time()
+                print(f'Execution time of interpolation: {end - start}')
                 return x_bar
             # 8 b
             if x1 <= x_bar <= x3:
@@ -109,13 +98,13 @@ def interpolation(x, dx, e1, e2, func):
 
 func2 = lambda x: 2*x**2-x+7
 func5 = lambda x: (127.0/4.0)*x**2-(61.0/4.0)*x+2.0
-min2 = dich(func2, 0, 6, 0.001, 0.0001)
-min5 = dich(func5, 0, 6, 0.001, 0.0001)
-print('dichtomy')
+print('dichotomy')
+min2 = dich(func2, 0, 6, 0.001, 0.00001)
 print(f'function 2:', f'x_min = {min2}', sep='\t')
+min5 = dich(func5, 0, 6, 0.001, 0.00001)
 print(f'function 5:', f'x_min = {min5}', sep='\t')
 print('interpolation')
-min22 = interpolation(0, 0.5, 0.001, 0.0001, func2)
-min25 = interpolation(0, 0.5, 0.001, 0.0001, func5)
+min22 = interpolation(0, 0.5, 0.0001, 0.00001, func2)
 print(f'function 2:', f'x_min = {min22}', sep='\t')
+min25 = interpolation(0, 0.5, 0.0001, 0.00001, func5)
 print(f'function 5:', f'x_min = {min25}', sep='\t')
